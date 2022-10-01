@@ -1,33 +1,45 @@
 import { Menu } from "semantic-ui-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { CategoryState } from "../../common/types";
+import { ROUTES } from "../../common/routes";
 
 const MenuExampleProps = () => {
-  const [activeMenu, setActiveMenu] = useState("home");
+  const navigate = useNavigate();
+  const categories = useSelector((state: CategoryState) => state.categories);
+  const [activeMenu, setActiveMenu] = useState(ROUTES.HOME);
 
+  const handleMenuClick = (menu: string) => {
+    setActiveMenu(menu);
+    navigate(menu);
+  };
   return (
     <Menu>
       <Menu.Item
-        name="home"
-        active={activeMenu === "home"}
-        onClick={() => setActiveMenu("home")}
+        name={ROUTES.HOME}
+        active={activeMenu === ROUTES.HOME}
+        onClick={() => handleMenuClick(ROUTES.HOME)}
       >
         Home
       </Menu.Item>
-
+      {categories.map(({ id, name }) => {
+        return (
+          <Menu.Item
+            name={name}
+            active={activeMenu === id}
+            onClick={() => handleMenuClick(`${ROUTES.CATEGORY}/${id}`)}
+          >
+            {name ? name : "New Category"}
+          </Menu.Item>
+        );
+      })}
       <Menu.Item
-        name="reviews"
-        active={activeMenu === "reviews"}
-        onClick={() => setActiveMenu("reviews")}
+        name={ROUTES.MANAGE_CATEGORIES}
+        active={activeMenu === ROUTES.MANAGE_CATEGORIES}
+        onClick={() => handleMenuClick(ROUTES.MANAGE_CATEGORIES)}
       >
-        Reviews
-      </Menu.Item>
-
-      <Menu.Item
-        name="upcomingEvents"
-        active={activeMenu === "upcomingEvents"}
-        onClick={() => setActiveMenu("upcomingEvents")}
-      >
-        Upcoming Events
+        Manage Categories
       </Menu.Item>
     </Menu>
   );
