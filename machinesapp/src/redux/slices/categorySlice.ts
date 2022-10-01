@@ -60,9 +60,17 @@ const categorySlice = createSlice({
       const index = updatedCategories.findIndex((obj) => {
         return obj.id == action.payload.catId;
       });
+      const itemsFields = updatedCategories[index].fields.map((field) => {
+        return {
+          fieldId: field.id,
+          type: field.type,
+          label: field.value,
+          value: "",
+        };
+      });
       updatedCategories[index].items = [
         ...updatedCategories[index].items,
-        action.payload.data,
+        { ...action.payload.data, fields: itemsFields },
       ];
 
       state.categories = [...updatedCategories];

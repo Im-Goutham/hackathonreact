@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, Card, Form, Icon, Input } from "semantic-ui-react";
-import { ItemDataType } from "../../common/types";
+import { Button, Card, Checkbox, Form, Icon, Input } from "semantic-ui-react";
+import { FIELD } from "../../common/enum";
+import { ItemDataType, ItemFieldType } from "../../common/types";
 
 type AddItemProps = {
   data: ItemDataType;
@@ -12,6 +13,33 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
 
   const handleSaveData = () => {
     onSubmit(formData);
+  };
+
+  const returnField = ({ type, label }: ItemFieldType) => {
+    if (type === FIELD.TEXT) {
+      return (
+        <>
+          <label>{label}</label>
+          <Input value={""} onChange={() => {}} />
+        </>
+      );
+    } else if (type === FIELD.NUMBER) {
+      return (
+        <>
+          <label>{label}</label>
+          <Input type="number" value={""} onChange={() => {}} />
+        </>
+      );
+    } else if (type === FIELD.DATE) {
+      return (
+        <>
+          <label>{label}</label>
+          <Input type="date" value={""} onChange={() => {}} />
+        </>
+      );
+    } else if (type === FIELD.CHECKBOX) {
+      return <Checkbox label={label} />;
+    }
   };
 
   return (
@@ -28,10 +56,11 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
           </Card.Header>
         </Card.Content>
         <Card.Content>
-          <Form.Field>
-            <label>Name</label>
-            <Input value={""} onChange={() => {}} />
-          </Form.Field>
+          {data.fields &&
+            data.fields.length > 0 &&
+            data.fields.map((field) => {
+              return <Form.Field>{returnField(field)}</Form.Field>;
+            })}
         </Card.Content>
         <Card.Content>
           <Button primary floated="right" onClick={handleSaveData}>

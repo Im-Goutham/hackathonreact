@@ -101,7 +101,6 @@ const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
               fluid
               label="Title Field"
               options={getTitleFieldOptions()}
-              defaultValue={getTitleFieldOptions()[0].value}
               value={formData.titleField}
               onChange={handleTitleFieldChange}
             />
@@ -127,7 +126,6 @@ const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
                   onChange={(e) => handleFieldLabelChange(key, e.target.value)}
                   label={
                     <Dropdown
-                      defaultValue={field.type}
                       value={field.type}
                       options={options}
                       onChange={(_, { value }) =>

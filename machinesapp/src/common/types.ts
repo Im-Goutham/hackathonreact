@@ -21,4 +21,7 @@ export type CategoryState = {
 
 export type ItemDataType = {
   id: string;
+  fields: Array<ItemFieldType>;
 };
+
+export type ItemFieldType = { fieldId: string; type: FIELD;label: string; value: string };
