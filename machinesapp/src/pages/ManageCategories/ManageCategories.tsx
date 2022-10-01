@@ -22,6 +22,7 @@ function ManageCategories() {
         name: "New Category",
         titleField: "title",
         fields: [{ id: generateID(), type: FIELD.TEXT, value: "Title" }],
+        items: [],
       })
     );
   };

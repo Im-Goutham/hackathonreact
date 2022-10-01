@@ -15,7 +15,7 @@ const Header = () => {
     navigate(menu);
   };
   return (
-    <Menu>
+    <Menu stackable>
       <Menu.Item
         name={ROUTES.HOME}
         active={activeMenu === ROUTES.HOME}

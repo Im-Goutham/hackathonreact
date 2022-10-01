@@ -65,24 +65,27 @@ const categorySlice = createSlice({
           return "";
         }
       };
-      const updatedItems = [...updatedCategories[index].items];
-      updatedItems.forEach((item: ItemDataType, key) => {
-        const updatedItemFields = updatedCategories[index].fields.map(
-          (field) => {
-            return {
-              fieldId: field.id,
-              type: field.type,
-              label: field.value,
-              value: findExistingItemFieldValue(field.id, item.fields),
-            };
-          }
-        );
-        updatedItems[key] = {
-          id: item.id,
-          fields: updatedItemFields,
-        };
-      });
-      updatedCategories[index].items = [...updatedItems];
+      if (updatedCategories[index].items && updatedCategories[index].items.length > 0) {
+        const updatedItems = [...updatedCategories[index].items];
+        updatedItems.forEach((item: ItemDataType, key) => {
+          const updatedItemFields = updatedCategories[index].fields.map(
+            (field) => {
+              return {
+                fieldId: field.id,
+                type: field.type,
+                label: field.value,
+                value: findExistingItemFieldValue(field.id, item.fields),
+              };
+            }
+          );
+          updatedItems[key] = {
+            id: item.id,
+            fields: updatedItemFields,
+          };
+        });
+        updatedCategories[index].items = [...updatedItems];
+      }
+
       state.categories = [...updatedCategories];
     },
     removeCategory: (state, action) => {

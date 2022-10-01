@@ -1,14 +1,7 @@
+import { isString } from "lodash";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  Button,
-  Card,
-  Checkbox,
-  CheckboxProps,
-  Form,
-  Icon,
-  Input,
-} from "semantic-ui-react";
+import { Button, Card, Checkbox, Form, Icon, Input } from "semantic-ui-react";
 import { FIELD } from "../../common/enum";
 import { CategoryState, ItemDataType, ItemFieldType } from "../../common/types";
 
@@ -80,7 +73,7 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
         <Checkbox
           label={label}
           checked={value as boolean}
-          onChange={(e, data) =>
+          onChange={(_, data) =>
             handleInputChange(key, data.checked as boolean)
           }
         />
@@ -92,7 +85,7 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
     const obj = formData.fields.find(
       (o) => o.fieldId === selectedCategory?.titleField
     );
-    return obj ? obj.value : "";
+    return obj?.value && isString(obj?.value) ? obj.value : "New Item";
   };
 
   return (

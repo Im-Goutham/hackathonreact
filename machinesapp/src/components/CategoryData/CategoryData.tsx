@@ -1,8 +1,6 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Button, Grid, Header } from "semantic-ui-react";
-import { CategoryState, ItemDataType } from "../../common/types";
+import { CategoryDataType, ItemDataType } from "../../common/types";
 import { generateID } from "../../common/utils";
 import AddItem from "../../components/AddItem";
 import {
@@ -12,16 +10,14 @@ import {
   saveItem,
 } from "../../redux/slices/categorySlice";
 
-function CategoryDashboard() {
-  let { id: catId } = useParams();
+function CategoryData({
+  catId,
+  category,
+}: {
+  catId: string;
+  category: CategoryDataType | undefined;
+}) {
   const dispatch = useDispatch();
-  const selectedCategory = useSelector(
-    (state: CategoryState) => state.selectedCategory
-  );
-
-  useEffect(() => {
-    dispatch(getCategory(catId));
-  }, [catId]);
 
   const handleAddItem = () => {
     const uniqId = generateID();
@@ -39,13 +35,12 @@ function CategoryDashboard() {
     dispatch(getCategory(catId));
   };
 
-  if (selectedCategory) {
-
+  if (category) {
     return (
       <>
-        <Header as="h2">{selectedCategory.name}</Header>
+        <Header as="h2">{category.name}</Header>
         <Grid>
-          {selectedCategory.items.map((data) => {
+          {category.items && category.items.length> 0 && category.items.map((data) => {
             return (
               <Grid.Column mobile={16} tablet={8} computer={5} key={data.id}>
                 <AddItem
@@ -70,4 +65,4 @@ function CategoryDashboard() {
   }
 }
 
-export default CategoryDashboard;
+export default CategoryData;
