@@ -23,6 +23,13 @@ const Header = () => {
       >
         Home
       </Menu.Item>
+      <Menu.Item
+        name={ROUTES.MANAGE_CATEGORIES}
+        active={activeMenu === ROUTES.MANAGE_CATEGORIES}
+        onClick={() => handleMenuClick(ROUTES.MANAGE_CATEGORIES)}
+      >
+        Manage Categories
+      </Menu.Item>
       {categories.map(({ id, name }) => {
         return (
           <Menu.Item
@@ -35,13 +42,6 @@ const Header = () => {
           </Menu.Item>
         );
       })}
-      <Menu.Item
-        name={ROUTES.MANAGE_CATEGORIES}
-        active={activeMenu === ROUTES.MANAGE_CATEGORIES}
-        onClick={() => handleMenuClick(ROUTES.MANAGE_CATEGORIES)}
-      >
-        Manage Categories
-      </Menu.Item>
     </Menu>
   );
 };

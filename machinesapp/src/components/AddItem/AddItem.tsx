@@ -1,7 +1,16 @@
-import { useState } from "react";
-import { Button, Card, Checkbox, Form, Icon, Input } from "semantic-ui-react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import {
+  Button,
+  Card,
+  Checkbox,
+  CheckboxProps,
+  Form,
+  Icon,
+  Input,
+} from "semantic-ui-react";
 import { FIELD } from "../../common/enum";
-import { ItemDataType, ItemFieldType } from "../../common/types";
+import { CategoryState, ItemDataType, ItemFieldType } from "../../common/types";
 
 type AddItemProps = {
   data: ItemDataType;
@@ -10,12 +19,19 @@ type AddItemProps = {
 };
 const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
   const [formData, setFormData] = useState<ItemDataType>(data);
+  const selectedCategory = useSelector(
+    (state: CategoryState) => state.selectedCategory
+  );
+
+  useEffect(() => {
+    setFormData(data);
+  }, [data]);
 
   const handleSaveData = () => {
     onSubmit(formData);
   };
 
-  const handleInputChange = (key: number, value: string) => {
+  const handleInputChange = (key: number, value: string | boolean) => {
     const updateFormData = Object.assign({}, formData);
     const fields = [...updateFormData.fields];
     const fieldData = Object.assign({}, fields[key]);
@@ -63,10 +79,20 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
       return (
         <Checkbox
           label={label}
-          onChange={(e, data) => handleInputChange(key, data.vaue)}
+          checked={value as boolean}
+          onChange={(e, data) =>
+            handleInputChange(key, data.checked as boolean)
+          }
         />
       );
     }
+  };
+
+  const findItemTitle = () => {
+    const obj = formData.fields.find(
+      (o) => o.fieldId === selectedCategory?.titleField
+    );
+    return obj ? obj.value : "";
   };
 
   return (
@@ -74,7 +100,7 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
       <Card fluid raised>
         <Card.Content>
           <Card.Header>
-            "New Item"
+            {findItemTitle()}
             <Icon
               name="trash"
               className="trash"

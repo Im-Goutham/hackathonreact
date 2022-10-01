@@ -24,4 +24,4 @@ export type ItemDataType = {
   fields: Array<ItemFieldType>;
 };
 
-export type ItemFieldType = { fieldId: string; type: FIELD;label: string; value: string };
+export type ItemFieldType = { fieldId: string; type: FIELD;label: string; value: string | boolean };
