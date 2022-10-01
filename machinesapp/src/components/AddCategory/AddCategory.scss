@@ -1,0 +1,16 @@
+.trash {
+  float: right;
+  cursor: pointer;
+  &:hover {
+    color: red;
+  }
+}
+
+.label {
+  margin-bottom: 10px;
+}
+
+.input2 {
+  width: 220px;
+  margin-bottom: 10px;
+}
