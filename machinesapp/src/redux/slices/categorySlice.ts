@@ -7,15 +7,19 @@ const initialState: CategoryState = {
     {
       id: "id1d837fff543c22",
       name: "Category 1",
-      titleField: "title",
-      fields: [{ type: FIELD.TEXT, value: "Title" }],
+      titleField: "id1d837fffbsdbdsbd543c22",
+      fields: [
+        { id: "id1d837fffbsdbdsbd543c22", type: FIELD.TEXT, value: "Title" },
+      ],
       items: [],
     },
     {
       id: "id1d837cfff5sfsdv3c22",
       name: "Category 2",
-      titleField: "model",
-      fields: [{ type: FIELD.TEXT, value: "Title" }],
+      titleField: "id1d837sssfffbsvvddd22",
+      fields: [
+        { id: "id1d837sssfffbsvvddd22", type: FIELD.TEXT, value: "Title" },
+      ],
       items: [],
     },
   ],
@@ -62,7 +66,6 @@ const categorySlice = createSlice({
       ];
 
       state.categories = [...updatedCategories];
-      getCategory(action.payload.catId);
     },
     removeItem: (state, action) => {
       const updatedCategories = [...state.categories];
@@ -75,7 +78,6 @@ const categorySlice = createSlice({
       });
       updatedCategories[index].items.splice(itemIndex, 1);
       state.categories = [...updatedCategories];
-      getCategory(action.payload.catId);
     },
   },
 });
@@ -86,6 +88,6 @@ export const {
   saveCategory,
   removeCategory,
   addItem,
-  removeItem
+  removeItem,
 } = categorySlice.actions;
 export default categorySlice.reducer;

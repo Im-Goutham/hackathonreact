@@ -21,7 +21,7 @@ function ManageCategories() {
         id,
         name: "New Category",
         titleField: "title",
-        fields: [{ type: FIELD.TEXT, value: "Title" }],
+        fields: [{ id: generateID(), type: FIELD.TEXT, value: "Title" }],
       })
     );
   };

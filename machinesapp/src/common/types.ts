@@ -9,6 +9,7 @@ export type CategoryDataType = {
 };
 
 export type FieldType = {
+  id: string;
   type: FIELD;
   value: string;
 };

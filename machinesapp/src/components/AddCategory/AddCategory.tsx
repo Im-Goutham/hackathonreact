@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { Button, Card, Dropdown, Form, Icon, Input } from "semantic-ui-react";
 import { fieldOptions } from "../../common/const";
 import { FIELD } from "../../common/enum";
 import { FieldType, CategoryDataType } from "../../common/types";
+import { generateID } from "../../common/utils";
 import "./AddCategory.scss";
 
 type AddCategoryProps = {
   data: CategoryDataType;
   onSubmit: (data: CategoryDataType) => void;
-  onRemove: (id: string)=> void;
+  onRemove: (id: string) => void;
 };
 const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
   const [formData, setFormData] = useState<CategoryDataType>(data);
@@ -22,7 +23,7 @@ const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
   const handleAddField = (type: FIELD) => {
     const updateFormData = Object.assign({}, formData);
     const updatedFields = [...updateFormData.fields];
-    updatedFields.push({ type, value: "" });
+    updatedFields.push({ id: generateID(), type, value: "" });
     updateFormData.fields = updatedFields;
     setFormData(updateFormData);
   };
@@ -34,8 +35,8 @@ const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
   const getTitleFieldOptions = () => {
     return formData.fields
       .filter((data) => data.value.trim())
-      .map(({ value }, key) => {
-        return { key, text: value, value };
+      .map(({ id, value }, key) => {
+        return { key, text: value, value: id };
       });
   };
 
@@ -65,13 +66,26 @@ const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
     setFormData(updateFormData);
   };
 
+  const handleTitleFieldChange = (
+    e: SyntheticEvent<HTMLElement>,
+    data: any
+  ) => {
+    const updateFormData = Object.assign({}, formData);
+    updateFormData.titleField = data.value;
+    setFormData(updateFormData);
+  };
+
   return (
     <Form>
       <Card fluid raised>
         <Card.Content>
           <Card.Header>
             {formData.name ? formData.name : "New Category"}
-            <Icon name="trash" className="trash" onClick={()=> onRemove(data.id)}/>
+            <Icon
+              name="trash"
+              className="trash"
+              onClick={() => onRemove(data.id)}
+            />
           </Card.Header>
         </Card.Content>
         <Card.Content>
@@ -88,6 +102,8 @@ const AddCategory = ({ data, onSubmit, onRemove }: AddCategoryProps) => {
               label="Title Field"
               options={getTitleFieldOptions()}
               defaultValue={getTitleFieldOptions()[0].value}
+              value={formData.titleField}
+              onChange={handleTitleFieldChange}
             />
           </Form.Field>
         </Card.Content>
