@@ -15,30 +15,57 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
     onSubmit(formData);
   };
 
-  const returnField = ({ type, label }: ItemFieldType) => {
+  const handleInputChange = (key: number, value: string) => {
+    const updateFormData = Object.assign({}, formData);
+    const fields = [...updateFormData.fields];
+    const fieldData = Object.assign({}, fields[key]);
+    fieldData.value = value;
+    fields[key] = fieldData;
+
+    updateFormData.fields = [...fields];
+    setFormData(updateFormData);
+  };
+
+  const returnField = ({ type, label, value }: ItemFieldType, key: number) => {
     if (type === FIELD.TEXT) {
       return (
         <>
           <label>{label}</label>
-          <Input value={""} onChange={() => {}} />
+          <Input
+            value={value}
+            onChange={(e) => handleInputChange(key, e.target.value)}
+          />
         </>
       );
     } else if (type === FIELD.NUMBER) {
       return (
         <>
           <label>{label}</label>
-          <Input type="number" value={""} onChange={() => {}} />
+          <Input
+            type="number"
+            value={value}
+            onChange={(e) => handleInputChange(key, e.target.value)}
+          />
         </>
       );
     } else if (type === FIELD.DATE) {
       return (
         <>
           <label>{label}</label>
-          <Input type="date" value={""} onChange={() => {}} />
+          <Input
+            type="date"
+            value={value}
+            onChange={(e) => handleInputChange(key, e.target.value)}
+          />
         </>
       );
     } else if (type === FIELD.CHECKBOX) {
-      return <Checkbox label={label} />;
+      return (
+        <Checkbox
+          label={label}
+          onChange={(e, data) => handleInputChange(key, data.vaue)}
+        />
+      );
     }
   };
 
@@ -56,10 +83,12 @@ const AddItem = ({ data, onSubmit, onRemove }: AddItemProps) => {
           </Card.Header>
         </Card.Content>
         <Card.Content>
-          {data.fields &&
-            data.fields.length > 0 &&
-            data.fields.map((field) => {
-              return <Form.Field>{returnField(field)}</Form.Field>;
+          {formData.fields &&
+            formData.fields.length > 0 &&
+            formData.fields.map((field, key) => {
+              return (
+                <Form.Field key={key}>{returnField(field, key)}</Form.Field>
+              );
             })}
         </Card.Content>
         <Card.Content>

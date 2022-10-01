@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Button, Grid, Header } from "semantic-ui-react";
+import _ from "lodash";
 import { CategoryState } from "../../common/types";
 import { generateID } from "../../common/utils";
 import AddItem from "../../components/AddItem";
@@ -34,11 +35,13 @@ function CategoryDashboard() {
   };
 
   if (selectedCategory) {
+    const categoryItems = _.clone(selectedCategory.items);
+
     return (
       <>
         <Header as="h2">{selectedCategory.name}</Header>
         <Grid>
-          {selectedCategory.items.map((data) => {
+          {categoryItems.map((data) => {
             return (
               <Grid.Column mobile={16} tablet={8} computer={5} key={data.id}>
                 <AddItem
