@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { CategoryState } from "../../common/types";
 import { ROUTES } from "../../common/routes";
 
-const MenuExampleProps = () => {
+const Header = () => {
   const navigate = useNavigate();
   const categories = useSelector((state: CategoryState) => state.categories);
   const [activeMenu, setActiveMenu] = useState(ROUTES.HOME);
@@ -26,6 +26,7 @@ const MenuExampleProps = () => {
       {categories.map(({ id, name }) => {
         return (
           <Menu.Item
+            key={id}
             name={name}
             active={activeMenu === id}
             onClick={() => handleMenuClick(`${ROUTES.CATEGORY}/${id}`)}
@@ -44,4 +45,4 @@ const MenuExampleProps = () => {
     </Menu>
   );
 };
-export default MenuExampleProps;
+export default Header;

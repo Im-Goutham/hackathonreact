@@ -1,10 +1,11 @@
 import { FIELD } from "./enum";
 
 export type CategoryDataType = {
-    id: string;
+  id: string;
   name: string;
   titleField: string;
   fields: Array<FieldType>;
+  items: Array<ItemDataType>;
 };
 
 export type FieldType = {
@@ -14,4 +15,9 @@ export type FieldType = {
 
 export type CategoryState = {
   categories: Array<CategoryDataType>;
+  selectedCategory?: CategoryDataType;
+};
+
+export type ItemDataType = {
+  id: string;
 };
