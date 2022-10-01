@@ -1,6 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FIELD } from "../../common/enum";
-import { CategoryState } from "../../common/types";
+import {
+  CategoryDataType,
+  CategoryState,
+  ItemDataType,
+  ItemFieldType,
+} from "../../common/types";
 
 const initialState: CategoryState = {
   categories: [
@@ -39,12 +44,44 @@ const categorySlice = createSlice({
     addCategory: (state, action) => {
       state.categories = [...state.categories, action.payload];
     },
-    saveCategory: (state, action) => {
+    saveCategory: (state, action: PayloadAction<CategoryDataType>) => {
       const updatedCategories = [...state.categories];
       const index = updatedCategories.findIndex((obj) => {
         return obj.id === action.payload.id;
       });
       updatedCategories[index] = { ...action.payload };
+
+      const findExistingItemFieldValue = (
+        id: string,
+        items: Array<ItemFieldType>
+      ) => {
+        const itemIndex = items.findIndex((obj: ItemFieldType) => {
+          return obj.fieldId === id;
+        });
+        if (itemIndex > -1) {
+          return items[itemIndex].value;
+        } else {
+          return "";
+        }
+      };
+      const updatedItems = [...updatedCategories[index].items];
+      updatedItems.forEach((item: ItemDataType, key) => {
+        const updatedItemFields = updatedCategories[index].fields.map(
+          (field) => {
+            return {
+              fieldId: field.id,
+              type: field.type,
+              label: field.value,
+              value: findExistingItemFieldValue(field.id, item.fields),
+            };
+          }
+        );
+        updatedItems[key] = {
+          id: item.id,
+          fields: updatedItemFields,
+        };
+      });
+      updatedCategories[index].items = [...updatedItems];
       state.categories = [...updatedCategories];
     },
     removeCategory: (state, action) => {
